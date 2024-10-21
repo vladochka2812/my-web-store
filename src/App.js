@@ -2,46 +2,45 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/Navbar/Navbar";
+import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import { apiUrl } from "./constants/ApiUrl";
-import Login from "./pages/Login";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import Cart from "./pages/Cart";
+import Home from "./pages/Home";
+import Category from "./pages/category/[categoryId]";
+import WishList from "./pages/WishList";
 
 function App() {
-  const [categories, setCategories] = useState();
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch(`${apiUrl}/products/categories`);
-      if (!response.ok) {
-        console.log("Response doesn't seem to be ok");
-      }
-      const data = await response.json();
-      setCategories(data);
-    } catch (error) {
-      console.error("Fetching error:", error);
-    }
-  };
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
   return (
     <div>
       <Router>
         <header>
-          <Navbar categories={categories} />
+          <Navbar />
         </header>
         <div>
           <section>
             <Routes>
-              {/* <Route path="/" element={<Home />} /> */}
-              {categories &&
-                categories.map((item) => (
-                  <Route key={item} path={`/${item}`} />
-                ))}
+              <Route path="/" element={<Home />} />
+              <Route path={`/category/:categoryId`} element={<Category />} />
 
               <Route path="/signUp" element={<SignUp />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/signIn" element={<SignIn />} />
+              <Route
+                path="/cart"
+                element={
+                  <ProtectedRoute>
+                    <Cart />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/wishList"
+                element={
+                  <ProtectedRoute>
+                    <WishList />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </section>
         </div>

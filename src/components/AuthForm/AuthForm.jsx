@@ -1,29 +1,30 @@
-import React from "react";
-import Logo from "../../images/logo.png";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { NavbarLink } from "../Navbar/NavbarLink";
 import { Button } from "../shared/Button/Button";
 import { Input } from "../shared/Input/Input";
 
-export const AuthForm = () => {
+export const AuthForm = ({ handleAuth }) => {
   const { pathname } = useLocation();
-  console.log(pathname);
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   let formText = {};
-  if (pathname === "/login") {
+  if (pathname === "/signIn") {
     formText = {
-      title: "Log in to your account",
+      title: "Sign in to your account",
       description: "Don't have an account?",
-      link: "/signUp",
-      button: "Login",
+      link: "/signIn",
+      button: "Sign In",
     };
   } else {
     formText = {
       title: "Create account",
       description: "Already have an account",
-      link: "/login",
-      button: "Sign up",
+      link: "/signUp",
+      button: "Sign Up",
     };
   }
+
   return (
     <div className="w-[400px] h-[400px] shadow-xl rounded-xl p-3 flex flex-col justify-around items-center">
       <h2 className="text-[32px] font-semibold">{formText.title}</h2>
@@ -33,13 +34,26 @@ export const AuthForm = () => {
           type="email"
           className="mt-4"
           onChange={(event) => {
-            console.log(event.target.value);
+            setEmail(event.target.value);
           }}
         />
-        <Input placeholder="Password" type="password" className="mt-4" />
+        <Input
+          placeholder="Password"
+          type="password"
+          className="mt-4"
+          onChange={(event) => {
+            setPassword(event.target.value);
+          }}
+        />
       </div>
 
-      <Button onClick={() => console.log("aaaa")}>{formText.button}</Button>
+      <Button
+        onClick={() => {
+          handleAuth(email, password);
+        }}
+      >
+        {formText.button}
+      </Button>
       <NavbarLink link={formText.link} name={formText.description} />
     </div>
   );
