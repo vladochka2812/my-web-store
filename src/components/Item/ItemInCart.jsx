@@ -1,24 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getItem } from "../../functions/getItem";
+import { getItem } from "../../functions/getItemsByIds";
 import { IoTrashOutline } from "react-icons/io5";
 import { addToCart, removeFromCart } from "../../redux/cart/cartSlice";
 
 export const ItemInCart = ({ item }) => {
-  const { amount, id, price } = item;
-  const [data, setData] = useState();
+  const { title, image, price, id, amount } = item;
   const dispatch = useDispatch();
-  useEffect(() => {
-    const fetchData = async () => {
-      await getItem({ id, setData });
-    };
-    fetchData();
-  }, [id]);
 
   return (
-    data && (
+    item && (
       <div className="flex gap-5 md:w-[50%] my-6">
-        <img src={data.image} className="w-28 h-36" />
+        <img src={image} className="w-28 h-36" />
         <div className="flex flex-col w-full justify-around">
           <div>
             <span
@@ -29,7 +22,7 @@ export const ItemInCart = ({ item }) => {
             >
               <IoTrashOutline size={24} />
             </span>
-            <h3>{data.title}</h3>
+            <h3>{title}</h3>
             <h4 className="text-[16px] font-semibold">{price} $</h4>
           </div>
 

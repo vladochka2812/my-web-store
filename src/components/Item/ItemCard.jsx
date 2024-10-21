@@ -3,17 +3,34 @@ import { IoHeartOutline, IoStarOutline, IoCloseOutline } from "react-icons/io5";
 import { Button } from "../shared/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/cart/cartSlice";
+import {
+  addToWishList,
+  removeFromWishList,
+} from "../../redux/wishList/wishListSlice";
 
 export const ItemCard = ({ item }) => {
   const { title, description, image, id, price, rating } = item;
   const itemInCart = useSelector((state) => state.cart.items).find(
     (item) => item.id === id
   );
+  const itemInWishList = useSelector((state) => state.wishList.items).find(
+    (item) => item.id === id
+  );
   const dispatch = useDispatch();
   const [showMore, setShowMore] = useState(false);
+
   return (
     <div className="w-[400px] m-12 flex flex-col items-center shadow-xl p-2 rounded-lg relative justify-between">
-      <IoHeartOutline size={32} className="absolute top-4 left-2" />
+      <IoHeartOutline
+        size={32}
+        color={itemInWishList ? "red" : "black"}
+        className="absolute top-4 left-2"
+        onClick={() => {
+          itemInWishList
+            ? dispatch(removeFromWishList({ id }))
+            : dispatch(addToWishList({ id }));
+        }}
+      />
       <div
         className={`${
           showMore ? "absolute" : "hidden"

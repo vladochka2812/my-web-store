@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ItemCard } from "../../components/Item/ItemCard";
+import { Title } from "../../components/shared/Title/Title";
 
 const Category = () => {
   const { categoryId } = useParams();
@@ -25,9 +26,7 @@ const Category = () => {
   }, [categoryId]);
   return (
     <div>
-      <h2 className="w-full flex justify-center text-[24px] font-semibold">
-        {categoryId.charAt(0).toUpperCase() + categoryId.slice(1)}
-      </h2>
+      <Title name={categoryId.charAt(0).toUpperCase() + categoryId.slice(1)} />
       <div className="w-full flex flex-wrap justify-center ">
         {categoryProducts &&
           categoryProducts.map((product) => (

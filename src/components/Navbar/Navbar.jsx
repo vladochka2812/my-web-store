@@ -79,7 +79,8 @@ export const Navbar = () => {
             <>
               <NavbarLink link={"/cart"} name={<IoCartOutline size={26} />} />
               <NavbarLink
-                name={<IoHeartOutline link={"/wishList"} size={26} />}
+                link="/wishList"
+                name={<IoHeartOutline size={26} />}
               />
               <IoLogOutOutline size={26} onClick={logOut} />
             </>
