@@ -32,7 +32,7 @@ const WishList = () => {
       />
 
       <div className="w-full flex flex-wrap justify-center ">
-        {data.length > 0 ? (
+        {data && data.length > 0 ? (
           data.map((item) => <ItemCard key={item.id} item={item} />)
         ) : (
           <EmptyMessage />

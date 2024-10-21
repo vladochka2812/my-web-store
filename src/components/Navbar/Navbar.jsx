@@ -9,10 +9,24 @@ import Logo from "../../images/logo.png";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../configs/firebase";
 import { handleDeleteAccessToken } from "../../functions/useAccessToken";
+import { useSelector } from "react-redux";
 
 export const Navbar = () => {
+  const { items: cartList } = useSelector((state) => state.cart);
+  const { items: wishList } = useSelector((state) => state.wishList);
+
   const [isAuth, setIsAuth] = useState(false);
   const [categories, setCategories] = useState();
+  const [wishListLength, setWishListLength] = useState();
+  const [cartListLength, setCartListLength] = useState();
+
+  useEffect(() => {
+    setCartListLength(cartList.length || 0);
+  }, [cartList]);
+
+  useEffect(() => {
+    setWishListLength(wishList.length || 0);
+  }, [wishList]);
 
   const fetchCategories = async () => {
     try {
@@ -77,10 +91,31 @@ export const Navbar = () => {
         <div className="flex flex-1 justify-end gap-6">
           {isAuth ? (
             <>
-              <NavbarLink link={"/cart"} name={<IoCartOutline size={26} />} />
+              <NavbarLink
+                link={"/cart"}
+                name={
+                  <span className="relative">
+                    <IoCartOutline size={26} />
+                    {cartListLength !== 0 && (
+                      <span className="absolute top-[-10px] right-[-10px] text-[10px] py-1 px-2 bg-gray-200 rounded-full">
+                        {cartListLength}
+                      </span>
+                    )}
+                  </span>
+                }
+              />
               <NavbarLink
                 link="/wishList"
-                name={<IoHeartOutline size={26} />}
+                name={
+                  <span className="relative">
+                    <IoHeartOutline size={26} />
+                    {wishListLength !== 0 && (
+                      <span className="absolute top-[-10px] right-[-10px] text-[10px] py-1 px-2 bg-gray-200 rounded-full">
+                        {wishListLength}
+                      </span>
+                    )}
+                  </span>
+                }
               />
               <IoLogOutOutline size={26} onClick={logOut} />
             </>

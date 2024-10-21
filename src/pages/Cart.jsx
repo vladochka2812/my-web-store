@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ItemInCart } from "../components/Item/ItemInCart";
 import { Button } from "../components/shared/Button/Button";
 import { Title } from "../components/shared/Title/Title";
 import { getItemsByIds } from "../functions/getItemsByIds";
 import { EmptyMessage } from "../components/EmptyMessage/EmptyMessage";
+import { cleanCart } from "../redux/cart/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const { items, totalPrice, totalAmount } = useSelector((state) => state.cart);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [data, setData] = useState();
   useEffect(() => {
     getItemsByIds({ items, setData });
@@ -16,7 +21,7 @@ const Cart = () => {
   return (
     <div className="flex flex-col px-20">
       <Title name="Cart" />
-      {data.length > 0 ? (
+      {data && data.length > 0 ? (
         <>
           <div>
             {data.map((item) => (
@@ -30,9 +35,19 @@ const Cart = () => {
             </span>
             <span className="flex justify-between items-center">
               <span>Total price:</span>
-              <span className="text-[20px] font-medium">{totalPrice}$</span>
+              <span className="text-[20px] font-medium">
+                {totalPrice.toFixed(2)}$
+              </span>
             </span>
-            <Button>Place order</Button>
+            <Button
+              onClick={() => {
+                dispatch(cleanCart());
+                alert("Do you want to place your order");
+                navigate("/");
+              }}
+            >
+              Place order
+            </Button>
           </div>
         </>
       ) : (
