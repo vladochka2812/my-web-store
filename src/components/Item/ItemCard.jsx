@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import { IoHeartOutline, IoStarOutline, IoCloseOutline } from "react-icons/io5";
 import { Button } from "../shared/Button/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../redux/cart/cartSlice";
 
 export const ItemCard = ({ item }) => {
   const { title, description, image, id, price, rating } = item;
+  const itemInCart = useSelector((state) => state.cart.items).find(
+    (item) => item.id === id
+  );
+  const dispatch = useDispatch();
   const [showMore, setShowMore] = useState(false);
   return (
     <div className="w-[400px] m-12 flex flex-col items-center shadow-xl p-2 rounded-lg relative justify-between">
@@ -44,7 +50,9 @@ export const ItemCard = ({ item }) => {
         >
           More info
         </Button>
-        <Button>Add to Cart</Button>
+        <Button onClick={() => dispatch(addToCart({ id, price }))}>
+          {itemInCart ? `In cart ${itemInCart.amount}` : "Add to Cart"}
+        </Button>
       </div>
     </div>
   );

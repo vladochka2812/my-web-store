@@ -39,6 +39,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log(user);
       if (user) {
         setIsAuth(true);
       } else {

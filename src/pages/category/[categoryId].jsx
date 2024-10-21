@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ItemCard } from "../../components/ItemCard/ItemCard";
+import { ItemCard } from "../../components/Item/ItemCard";
 
 const Category = () => {
   const { categoryId } = useParams();
@@ -15,7 +15,6 @@ const Category = () => {
         console.log("Response doesn't seem to be ok");
       }
       const data = await response.json();
-      console.log(data);
       setCategoryProducts(data);
     } catch (error) {
       console.error("Fetching error:", error);
@@ -23,14 +22,18 @@ const Category = () => {
   };
   useEffect(() => {
     fetchCategoryProducts(categoryId);
-    console.log(categoryProducts);
   }, [categoryId]);
   return (
-    <div className="w-full flex flex-wrap justify-center ">
-      {categoryProducts &&
-        categoryProducts.map((product) => (
-          <ItemCard key={product.id} item={product} />
-        ))}
+    <div>
+      <h2 className="w-full flex justify-center text-[24px] font-semibold">
+        {categoryId.charAt(0).toUpperCase() + categoryId.slice(1)}
+      </h2>
+      <div className="w-full flex flex-wrap justify-center ">
+        {categoryProducts &&
+          categoryProducts.map((product) => (
+            <ItemCard key={product.id} item={product} />
+          ))}
+      </div>
     </div>
   );
 };
