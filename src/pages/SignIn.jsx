@@ -1,15 +1,15 @@
 import React from "react";
 import { AuthForm } from "../components/AuthForm/AuthForm";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../configs/firebase";
 import { handleSaveAccessToken } from "../functions/useAccessToken";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
+const SignIn = () => {
   const navigate = useNavigate();
-  const signUpUser = async (email, password) => {
+  const signInUser = async (email, password) => {
     try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
+      const user = await signInWithEmailAndPassword(auth, email, password);
       handleSaveAccessToken(user.user.accessToken);
       navigate("/");
     } catch (error) {
@@ -18,9 +18,9 @@ const SignUp = () => {
   };
   return (
     <div className="flex w-full justify-center items-center mt-20">
-      <AuthForm handleAuth={signUpUser} />
+      <AuthForm handleAuth={signInUser} />
     </div>
   );
 };
 
-export default SignUp;
+export default SignIn;
