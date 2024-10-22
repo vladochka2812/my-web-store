@@ -2,6 +2,7 @@ import React from "react";
 import mainImage from "../images/main-photo.avif";
 import { Button } from "../components/shared/Button/Button";
 import { useNavigate } from "react-router-dom";
+import { RoutesList } from "../utilities/routes";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Home = () => {
         </span>
         <Button
           onClick={() => {
-            navigate("/category/women's clothing");
+            navigate(RoutesList.WOMEN);
           }}
         >
           Start shopping

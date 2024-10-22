@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { getItem } from "../../functions/getItemsByIds";
 import { IoTrashOutline } from "react-icons/io5";
-import { addToCart, removeFromCart } from "../../redux/cart/cartSlice";
+import { addToCart, removeFromCart } from "../../redux/cart/cartActions";
 
 export const ItemInCart = ({ item }) => {
   const { title, image, price, id, amount } = item;
@@ -11,7 +10,7 @@ export const ItemInCart = ({ item }) => {
   return (
     item && (
       <div className="flex gap-5 md:w-[50%] my-6">
-        <img src={image} className="w-28 h-36" />
+        <img src={image} alt={`item-${id}`} className="w-28 h-36" />
         <div className="flex flex-col w-full justify-around">
           <div>
             <span

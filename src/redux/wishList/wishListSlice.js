@@ -1,4 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  ADD_TO_WISHLIST,
+  addToWishListReducer,
+} from "./reducers/addToWishListReducer";
+import {
+  REMOVE_FROM_WISHLIST,
+  removeFromWishListReducer,
+} from "./reducers/removeFromWishListReducer";
+import {
+  CLEAN_WISHLIST,
+  cleanWishListReducer,
+} from "./reducers/cleanWishListReducer";
 
 const getWishListData = () => {
   const storedWishList = localStorage.getItem("wishList");
@@ -14,25 +26,13 @@ const initialState = getWishListData();
 export const wishListSlice = createSlice({
   name: "wishList",
   initialState,
-  reducers: {
-    addToWishList: (state, action) => {
-      const newItem = action.payload;
-      state.items.push({ id: newItem.id });
-      localStorage.setItem("wishList", JSON.stringify(state));
-    },
-    removeFromWishList(state, action) {
-      const { id } = action.payload;
-      state.items = state.items.filter((item) => item.id !== id);
-      localStorage.setItem("wishList", JSON.stringify(state));
-    },
-    cleanWishList(state) {
-      state.items = [];
-      localStorage.setItem("wishList", JSON.stringify(state));
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(ADD_TO_WISHLIST, addToWishListReducer)
+      .addCase(REMOVE_FROM_WISHLIST, removeFromWishListReducer)
+      .addCase(CLEAN_WISHLIST, cleanWishListReducer);
   },
 });
-
-export const { addToWishList, removeFromWishList, cleanWishList } =
-  wishListSlice.actions;
 
 export default wishListSlice.reducer;

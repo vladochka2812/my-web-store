@@ -12,7 +12,7 @@ import { handleDeleteAccessToken } from "../../functions/useAccessToken";
 import { useSelector } from "react-redux";
 
 export const Navbar = () => {
-  const { items: cartList } = useSelector((state) => state.cart);
+  const { totalAmount: cartAmount } = useSelector((state) => state.cart);
   const { items: wishList } = useSelector((state) => state.wishList);
 
   const [isAuth, setIsAuth] = useState(false);
@@ -21,8 +21,8 @@ export const Navbar = () => {
   const [cartListLength, setCartListLength] = useState();
 
   useEffect(() => {
-    setCartListLength(cartList.length || 0);
-  }, [cartList]);
+    setCartListLength(cartAmount || 0);
+  }, [cartAmount]);
 
   useEffect(() => {
     setWishListLength(wishList.length || 0);
@@ -33,9 +33,6 @@ export const Navbar = () => {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/products/categories`
       );
-      if (!response.ok) {
-        console.log("Response doesn't seem to be ok");
-      }
       const data = await response.json();
       setCategories(data);
     } catch (error) {
@@ -53,7 +50,6 @@ export const Navbar = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log(user);
       if (user) {
         setIsAuth(true);
       } else {

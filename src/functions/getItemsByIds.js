@@ -1,5 +1,4 @@
 export const getItemsByIds = async ({ items, setData }) => {
-  console.log(items);
   let itemsList = [];
 
   for (const item of items) {
@@ -8,9 +7,6 @@ export const getItemsByIds = async ({ items, setData }) => {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/products/${itemId}`
       );
-      if (!response.ok) {
-        console.log("Response doesn't seem to be ok");
-      }
       const data = await response.json();
       itemsList.push({ ...data, amount });
     } catch (error) {

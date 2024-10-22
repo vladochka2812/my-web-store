@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { IoHeartOutline, IoStarOutline, IoCloseOutline } from "react-icons/io5";
 import { Button } from "../shared/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../redux/cart/cartSlice";
+import { isAuthenticated } from "../../configs/firebase";
+import { selectItems } from "../../redux/select";
+import { addToCart } from "../../redux/cart/cartActions";
 import {
   addToWishList,
   removeFromWishList,
-} from "../../redux/wishList/wishListSlice";
-import { isAuthenticated } from "../../configs/firebase";
-import { selectItems } from "../../redux/select";
+} from "../../redux/wishList/wishListActions";
 
 export const ItemCard = ({ item }) => {
   const { title, description, image, id, price, rating } = item;

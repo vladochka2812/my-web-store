@@ -1,21 +1,25 @@
 import React, { useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { NavbarLink } from "../Navbar/NavbarLink";
 import { Button } from "../shared/Button/Button";
 import { Input } from "../shared/Input/Input";
 import { RoutesList } from "../../utilities/routes";
-import { signInFormText, signUpFormText } from "../../utilities/formText";
+import {
+  signInFormComponents,
+  signUpFormComponents,
+} from "../../utilities/formComponents";
 
 export const AuthForm = ({ handleAuth }) => {
   const { pathname } = useLocation();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const navigate = useNavigate();
 
   const cacheFormText = useMemo(() => {
     if (pathname === RoutesList.SIGNIN) {
-      return signInFormText;
+      return signInFormComponents;
     } else {
-      return signUpFormText;
+      return signUpFormComponents;
     }
   }, [pathname]);
   return (
@@ -41,7 +45,7 @@ export const AuthForm = ({ handleAuth }) => {
       </div>
       <Button
         onClick={() => {
-          handleAuth(email, password);
+          cacheFormText.function(email, password, navigate);
         }}
       >
         {cacheFormText.button}

@@ -1,7 +1,7 @@
 export const handleSaveAccessToken = (token) => {
-  sessionStorage.setItem("accessToken", token);
+  localStorage.setItem("accessToken", token);
 };
 
 export const handleDeleteAccessToken = () => {
-  sessionStorage.removeItem("accessToken");
+  localStorage.removeItem("accessToken");
 };

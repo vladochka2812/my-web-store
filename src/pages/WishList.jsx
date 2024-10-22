@@ -4,8 +4,8 @@ import { getItemsByIds } from "../functions/getItemsByIds";
 import { useDispatch, useSelector } from "react-redux";
 import { ItemCard } from "../components/Item/ItemCard";
 import { IoTrashOutline } from "react-icons/io5";
-import { cleanWishList } from "../redux/wishList/wishListSlice";
 import { EmptyMessage } from "../components/EmptyMessage/EmptyMessage";
+import { cleanWishList } from "../redux/wishList/wishListActions";
 
 const WishList = () => {
   const [data, setData] = useState();
@@ -32,7 +32,7 @@ const WishList = () => {
       />
 
       <div className="w-full flex flex-wrap justify-center ">
-        {data && data.length > 0 ? (
+        {!!data?.length > 0 ? (
           data.map((item) => <ItemCard key={item.id} item={item} />)
         ) : (
           <EmptyMessage />
