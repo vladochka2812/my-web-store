@@ -11,42 +11,37 @@ import Category from "./pages/category/[categoryId]";
 import WishList from "./pages/WishList";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
+import { RoutesList } from "./utilities/routes";
 
 function App() {
   return (
     <div>
       <Provider store={store}>
         <Router>
-          <header>
-            <Navbar />
-          </header>
-          <div>
-            <section>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path={`/category/:categoryId`} element={<Category />} />
+          <Navbar />
+          <Routes>
+            <Route path={RoutesList.HOME} element={<Home />} />
+            <Route path={RoutesList.CATEGORY} element={<Category />} />
 
-                <Route path="/signUp" element={<SignUp />} />
-                <Route path="/signIn" element={<SignIn />} />
-                <Route
-                  path="/cart"
-                  element={
-                    <ProtectedRoute>
-                      <Cart />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/wishList"
-                  element={
-                    <ProtectedRoute>
-                      <WishList />
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
-            </section>
-          </div>
+            <Route path={RoutesList.SIGNUP} element={<SignUp />} />
+            <Route path={RoutesList.SIGNIN} element={<SignIn />} />
+            <Route
+              path={RoutesList.CART}
+              element={
+                <ProtectedRoute>
+                  <Cart />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={RoutesList.WISHLIST}
+              element={
+                <ProtectedRoute>
+                  <WishList />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
         </Router>
       </Provider>
     </div>

@@ -64,72 +64,74 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <nav>
-      <div className="flex justify-between items-center h-[40px] m-5">
-        <div className="flex flex-1 gap-6">
-          {categories &&
-            categories.map((item) => (
-              <NavbarLink
-                key={item}
-                name={item.charAt(0).toUpperCase() + item.slice(1)}
-                link={`category/${item}`}
-              />
-            ))}
+    <header>
+      <nav>
+        <div className="flex justify-between items-center h-[40px] m-5">
+          <div className="flex flex-1 gap-6">
+            {categories &&
+              categories.map((item) => (
+                <NavbarLink
+                  key={item}
+                  name={item.charAt(0).toUpperCase() + item.slice(1)}
+                  link={`category/${item}`}
+                />
+              ))}
+          </div>
+          <div>
+            <NavbarLink
+              link={"/"}
+              name={
+                <img
+                  src={Logo}
+                  alt="logo"
+                  className="object-cover h-10 hover:h-[42px] transition-color"
+                />
+              }
+            />
+          </div>
+          <div className="flex flex-1 justify-end gap-6">
+            {isAuth ? (
+              <>
+                <NavbarLink
+                  link={"/cart"}
+                  name={
+                    <span className="relative">
+                      <IoCartOutline size={26} />
+                      {cartListLength !== 0 && (
+                        <span className="absolute top-[-10px] right-[-10px] text-[10px] py-1 px-2 bg-gray-200 rounded-full">
+                          {cartListLength}
+                        </span>
+                      )}
+                    </span>
+                  }
+                />
+                <NavbarLink
+                  link="/wishList"
+                  name={
+                    <span className="relative">
+                      <IoHeartOutline size={26} />
+                      {wishListLength !== 0 && (
+                        <span className="absolute top-[-10px] right-[-10px] text-[10px] py-1 px-2 bg-gray-200 rounded-full">
+                          {wishListLength}
+                        </span>
+                      )}
+                    </span>
+                  }
+                />
+                <IoLogOutOutline size={26} onClick={logOut} />
+              </>
+            ) : (
+              <>
+                <span className="flex gap-2">
+                  <NavbarLink link={"/signUp"} name="Sign Up" />
+                  <span>/</span>
+                  <NavbarLink link={"/signIn"} name="Sign In" />
+                </span>
+              </>
+            )}
+          </div>
         </div>
-        <div>
-          <NavbarLink
-            link={"/"}
-            name={
-              <img
-                src={Logo}
-                alt="logo"
-                className="object-cover h-10 hover:h-[42px] transition-color"
-              />
-            }
-          />
-        </div>
-        <div className="flex flex-1 justify-end gap-6">
-          {isAuth ? (
-            <>
-              <NavbarLink
-                link={"/cart"}
-                name={
-                  <span className="relative">
-                    <IoCartOutline size={26} />
-                    {cartListLength !== 0 && (
-                      <span className="absolute top-[-10px] right-[-10px] text-[10px] py-1 px-2 bg-gray-200 rounded-full">
-                        {cartListLength}
-                      </span>
-                    )}
-                  </span>
-                }
-              />
-              <NavbarLink
-                link="/wishList"
-                name={
-                  <span className="relative">
-                    <IoHeartOutline size={26} />
-                    {wishListLength !== 0 && (
-                      <span className="absolute top-[-10px] right-[-10px] text-[10px] py-1 px-2 bg-gray-200 rounded-full">
-                        {wishListLength}
-                      </span>
-                    )}
-                  </span>
-                }
-              />
-              <IoLogOutOutline size={26} onClick={logOut} />
-            </>
-          ) : (
-            <>
-              <span className="flex gap-2">
-                <NavbarLink link={"/signUp"} name="Sign Up" />
-                <span>/</span>
-                <NavbarLink link={"/signIn"} name="Sign In" />
-              </span>
-            </>
-          )}
-        </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
   );
 };
