@@ -7,31 +7,36 @@ import {
   addToWishList,
   removeFromWishList,
 } from "../../redux/wishList/wishListSlice";
+import { isAuthenticated } from "../../configs/firebase";
+import { selectItems } from "../../redux/select";
 
 export const ItemCard = ({ item }) => {
   const { title, description, image, id, price, rating } = item;
-  const { cart, wishList } = useSelector((state) => ({
-    cart: state.cart.items,
-    wishList: state.wishList.items,
-  }));
+  const { cart, wishList } = useSelector(selectItems);
   const itemInCart = cart.find((item) => item.id === id);
   const itemInWishList = wishList.find((item) => item.id === id);
 
   const dispatch = useDispatch();
   const [showMore, setShowMore] = useState(false);
 
+  const handleHeartClick = () => {
+    if (itemInWishList) {
+      dispatch(removeFromWishList({ id }));
+    } else {
+      dispatch(addToWishList({ id }));
+    }
+  };
+
   return (
     <div className="w-[400px] m-12 flex flex-col items-center shadow-xl p-2 rounded-lg relative justify-between">
-      <IoHeartOutline
-        size={32}
-        color={itemInWishList ? "red" : "black"}
-        className="absolute top-4 left-2"
-        onClick={() => {
-          itemInWishList
-            ? dispatch(removeFromWishList({ id }))
-            : dispatch(addToWishList({ id }));
-        }}
-      />
+      {isAuthenticated() && (
+        <IoHeartOutline
+          size={32}
+          color={itemInWishList ? "red" : "black"}
+          className="absolute top-4 left-2"
+          onClick={handleHeartClick}
+        />
+      )}
       <div
         className={`${
           showMore ? "absolute" : "hidden"
