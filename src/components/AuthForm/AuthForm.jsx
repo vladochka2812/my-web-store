@@ -8,19 +8,21 @@ import {
   signInFormComponents,
   signUpFormComponents,
 } from "../../utilities/formComponents";
-import { authUser } from "../../functions/useAuth";
+import { useAuthUser } from "../../functions/useAuth";
 
 export const AuthForm = () => {
   const { pathname } = useLocation();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const navigate = useNavigate();
+
+  const { sign } = useAuthUser({ pathname, email, password });
 
   const cacheFormText = useMemo(() => {
     return pathname === RoutesList.SIGNIN
       ? signInFormComponents
       : signUpFormComponents;
   }, [pathname]);
+
   return (
     <div className="w-[400px] h-[400px] shadow-xl rounded-xl p-3 flex flex-col justify-around items-center">
       <h2 className="text-[32px] font-semibold">{cacheFormText.title}</h2>
@@ -42,13 +44,7 @@ export const AuthForm = () => {
           }}
         />
       </div>
-      <Button
-        onClick={() => {
-          authUser({ pathname, email, password, navigate });
-        }}
-      >
-        {cacheFormText.button}
-      </Button>
+      <Button onClick={() => sign()}>{cacheFormText.button}</Button>
       <NavbarLink link={cacheFormText.link} name={cacheFormText.description} />
     </div>
   );
