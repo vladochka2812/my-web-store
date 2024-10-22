@@ -8,19 +8,18 @@ import {
   signInFormComponents,
   signUpFormComponents,
 } from "../../utilities/formComponents";
+import { useAuth } from "../../functions/useAuth";
 
-export const AuthForm = ({ handleAuth }) => {
+export const AuthForm = () => {
   const { pathname } = useLocation();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
 
   const cacheFormText = useMemo(() => {
-    if (pathname === RoutesList.SIGNIN) {
-      return signInFormComponents;
-    } else {
-      return signUpFormComponents;
-    }
+    return pathname === RoutesList.SIGNIN
+      ? signInFormComponents
+      : signUpFormComponents;
   }, [pathname]);
   return (
     <div className="w-[400px] h-[400px] shadow-xl rounded-xl p-3 flex flex-col justify-around items-center">
@@ -45,7 +44,7 @@ export const AuthForm = ({ handleAuth }) => {
       </div>
       <Button
         onClick={() => {
-          cacheFormText.function(email, password, navigate);
+          useAuth.function(pathname, email, password, navigate);
         }}
       >
         {cacheFormText.button}

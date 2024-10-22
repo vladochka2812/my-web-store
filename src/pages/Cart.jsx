@@ -28,7 +28,7 @@ const Cart = () => {
   return (
     <div className="flex flex-col px-20">
       <Title name="Cart" />
-      {!!data?.length > 0 ? (
+      {!!data?.length ? (
         <>
           <div>
             {data.map((item) => (

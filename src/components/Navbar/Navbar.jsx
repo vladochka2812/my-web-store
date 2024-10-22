@@ -6,10 +6,10 @@ import {
   IoLogOutOutline,
 } from "react-icons/io5";
 import Logo from "../../images/logo.png";
-import { signOut, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../configs/firebase";
-import { handleDeleteAccessToken } from "../../functions/useAccessToken";
 import { useSelector } from "react-redux";
+import { useLogOut } from "../../functions/useLogOut";
 
 export const Navbar = () => {
   const { totalAmount: cartAmount } = useSelector((state) => state.cart);
@@ -20,15 +20,7 @@ export const Navbar = () => {
   const [wishListLength, setWishListLength] = useState();
   const [cartListLength, setCartListLength] = useState();
 
-  useEffect(() => {
-    setCartListLength(cartAmount || 0);
-  }, [cartAmount]);
-
-  useEffect(() => {
-    setWishListLength(wishList.length || 0);
-  }, [wishList]);
-
-  const fetchCategories = async () => {
+  const getCategories = async () => {
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/products/categories`
@@ -39,14 +31,18 @@ export const Navbar = () => {
       console.error("Fetching error:", error);
     }
   };
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
-  const logOut = async () => {
-    await signOut(auth);
-    handleDeleteAccessToken();
-  };
+  useEffect(() => {
+    setCartListLength(cartAmount || 0);
+  }, [cartAmount]);
+
+  useEffect(() => {
+    setWishListLength(wishList.length || 0);
+  }, [wishList]);
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -114,7 +110,7 @@ export const Navbar = () => {
                     </span>
                   }
                 />
-                <IoLogOutOutline size={26} onClick={logOut} />
+                <IoLogOutOutline size={26} onClick={useLogOut} />
               </>
             ) : (
               <>

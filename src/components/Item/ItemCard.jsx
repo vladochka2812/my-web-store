@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { IoHeartOutline, IoStarOutline, IoCloseOutline } from "react-icons/io5";
 import { Button } from "../shared/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,18 +13,22 @@ import {
 export const ItemCard = ({ item }) => {
   const { title, description, image, id, price, rating } = item;
   const { cart, wishList } = useSelector(selectItems);
-  const itemInCart = cart.find((item) => item.id === id);
-  const itemInWishList = wishList.find((item) => item.id === id);
+  const itemInCart = useMemo(() => {
+    return cart.find((item) => item.id === id);
+  }, [cart, id]);
+  const itemInWishList =
+    (() => {
+      wishList.find((item) => item.id === id);
+    },
+    [wishList, id]);
 
   const dispatch = useDispatch();
   const [showMore, setShowMore] = useState(false);
 
   const handleHeartClick = () => {
-    if (itemInWishList) {
-      dispatch(removeFromWishList({ id }));
-    } else {
-      dispatch(addToWishList({ id }));
-    }
+    dispatch(
+      itemInWishList ? removeFromWishList({ id }) : addToWishList({ id })
+    );
   };
 
   return (
