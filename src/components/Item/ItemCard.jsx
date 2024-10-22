@@ -10,12 +10,13 @@ import {
 
 export const ItemCard = ({ item }) => {
   const { title, description, image, id, price, rating } = item;
-  const itemInCart = useSelector((state) => state.cart.items).find(
-    (item) => item.id === id
-  );
-  const itemInWishList = useSelector((state) => state.wishList.items).find(
-    (item) => item.id === id
-  );
+  const { cart, wishList } = useSelector((state) => ({
+    cart: state.cart.items,
+    wishList: state.wishList.items,
+  }));
+  const itemInCart = cart.find((item) => item.id === id);
+  const itemInWishList = wishList.find((item) => item.id === id);
+
   const dispatch = useDispatch();
   const [showMore, setShowMore] = useState(false);
 
