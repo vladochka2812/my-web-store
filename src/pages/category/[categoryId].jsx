@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { ItemCard } from "../../components/Item/ItemCard";
 import { Title } from "../../components/shared/Title/Title";
@@ -14,9 +14,13 @@ const Category = () => {
     dispatch(getCategoryItems(categoryId));
   }, [categoryId, dispatch]);
 
+  const categoryName = useMemo(() => {
+    return categoryId.charAt(0).toUpperCase() + categoryId.slice(1);
+  }, [categoryId]);
+
   return (
     <div>
-      <Title name={categoryId.charAt(0).toUpperCase() + categoryId.slice(1)} />
+      <Title name={categoryName} />
       <div className="w-full flex flex-wrap justify-center ">
         {!loading ? (
           categoryItems.map((product) => (
