@@ -5,5 +5,5 @@ export const RoutesList = {
   CATEGORY: "/category/:categoryId",
   CART: "/cart",
   WISHLIST: "/wishList",
-  WOMEN: " /category/women's clothing",
+  WOMEN: "/category/women's clothing",
 };

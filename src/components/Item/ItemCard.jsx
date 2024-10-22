@@ -77,9 +77,11 @@ export const ItemCard = ({ item }) => {
         >
           More info
         </Button>
-        <Button onClick={() => dispatch(addToCart({ id, price }))}>
-          {itemInCart ? `In cart ${itemInCart.amount}` : "Add to Cart"}
-        </Button>
+        {isAuthenticated() && (
+          <Button onClick={() => dispatch(addToCart({ id, price }))}>
+            {itemInCart ? `In cart ${itemInCart.amount}` : "Add to Cart"}
+          </Button>
+        )}
       </div>
     </div>
   );

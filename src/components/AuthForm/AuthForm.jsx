@@ -4,52 +4,58 @@ import { NavbarLink } from "../Navbar/NavbarLink";
 import { Button } from "../shared/Button/Button";
 import { Input } from "../shared/Input/Input";
 import { RoutesList } from "../../utilities/routes";
-import {
-  signInFormComponents,
-  signUpFormComponents,
-} from "../../utilities/formComponents";
-import { useAuth } from "../../functions/useAuth";
+import { authUser } from "../../functions/useAuth";
 
 export const AuthForm = () => {
   const { pathname } = useLocation();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const cacheFormText = useMemo(() => {
-    return pathname === RoutesList.SIGNIN
-      ? signInFormComponents
-      : signUpFormComponents;
+  let formText = useMemo(() => {
+    if (pathname === RoutesList.SIGNIN) {
+      return {
+        title: "Sign in to your account",
+        description: "Don't have an account?",
+        link: "/signUp",
+        button: "Sign In",
+      };
+    } else {
+      return {
+        title: "Create account",
+        description: "Already have an account?",
+        link: "/signIn",
+        button: "Sign Up",
+      };
+    }
   }, [pathname]);
+
   return (
     <div className="w-[400px] h-[400px] shadow-xl rounded-xl p-3 flex flex-col justify-around items-center">
-      <h2 className="text-[32px] font-semibold">{cacheFormText.title}</h2>
+      <h2 className="text-[32px] font-semibold">{formText.title}</h2>
       <div>
         <Input
           placeholder="Email"
           type="email"
           className="mt-4"
-          onChange={(event) => {
-            setEmail(event.target.value);
-          }}
+          onChange={(event) => setEmail(event.target.value)}
         />
         <Input
           placeholder="Password"
           type="password"
           className="mt-4"
-          onChange={(event) => {
-            setPassword(event.target.value);
-          }}
+          onChange={(event) => setPassword(event.target.value)}
         />
       </div>
+
       <Button
         onClick={() => {
-          useAuth.function(pathname, email, password, navigate);
+          authUser({ pathname, email, password, navigate });
         }}
       >
-        {cacheFormText.button}
+        {formText.button}
       </Button>
-      <NavbarLink link={cacheFormText.link} name={cacheFormText.description} />
+      <NavbarLink link={formText.link} name={formText.description} />
     </div>
   );
 };

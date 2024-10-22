@@ -6,7 +6,7 @@ import { RoutesList } from "../utilities/routes";
 import { auth } from "../configs/firebase";
 import { handleSaveAccessToken } from "./useAccessToken";
 
-export const useAuth = async ({ pathname, email, password, navigate }) => {
+export const authUser = async ({ pathname, email, password, navigate }) => {
   try {
     const user =
       pathname === RoutesList.SIGNIN
