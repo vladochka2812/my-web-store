@@ -8,7 +8,7 @@ import {
   signInFormComponents,
   signUpFormComponents,
 } from "../../utilities/formComponents";
-import { useAuth } from "../../functions/useAuth";
+import { authUser } from "../../functions/useAuth";
 
 export const AuthForm = () => {
   const { pathname } = useLocation();
@@ -44,7 +44,7 @@ export const AuthForm = () => {
       </div>
       <Button
         onClick={() => {
-          useAuth.function(pathname, email, password, navigate);
+          authUser({ pathname, email, password, navigate });
         }}
       >
         {cacheFormText.button}

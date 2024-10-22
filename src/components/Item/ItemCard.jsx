@@ -16,21 +16,20 @@ export const ItemCard = ({ item }) => {
   const itemInCart = useMemo(() => {
     return cart.find((item) => item.id === id);
   }, [cart, id]);
-  const itemInWishList =
-    (() => {
-      wishList.find((item) => item.id === id);
-    },
-    [wishList, id]);
+  const itemInWishList = useMemo(() => {
+    return wishList.find((item) => item.id === id);
+  }, [wishList, id]);
 
   const dispatch = useDispatch();
   const [showMore, setShowMore] = useState(false);
 
-  const handleHeartClick = () => {
-    dispatch(
-      itemInWishList ? removeFromWishList({ id }) : addToWishList({ id })
-    );
+  const handleHeartClick = ({ id }) => {
+    if (itemInWishList) {
+      dispatch(removeFromWishList({ id }));
+    } else {
+      dispatch(addToWishList({ id }));
+    }
   };
-
   return (
     <div className="w-[400px] m-12 flex flex-col items-center shadow-xl p-2 rounded-lg relative justify-between">
       {isAuthenticated() && (
@@ -38,7 +37,7 @@ export const ItemCard = ({ item }) => {
           size={32}
           color={itemInWishList ? "red" : "black"}
           className="absolute top-4 left-2"
-          onClick={handleHeartClick}
+          onClick={() => handleHeartClick({ id })}
         />
       )}
       <div
@@ -77,9 +76,11 @@ export const ItemCard = ({ item }) => {
         >
           More info
         </Button>
-        <Button onClick={() => dispatch(addToCart({ id, price }))}>
-          {itemInCart ? `In cart ${itemInCart.amount}` : "Add to Cart"}
-        </Button>
+        {isAuthenticated() && (
+          <Button onClick={() => dispatch(addToCart({ id, price }))}>
+            {itemInCart ? `In cart ${itemInCart.amount}` : "Add to Cart"}
+          </Button>
+        )}
       </div>
     </div>
   );

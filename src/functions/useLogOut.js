@@ -2,7 +2,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../configs/firebase";
 import { handleDeleteAccessToken } from "./useAccessToken";
 
-export const useLogOut = async () => {
+export const logOutUser = async ({ navigate }) => {
   await signOut(auth);
   handleDeleteAccessToken();
+  navigate("/");
 };

@@ -9,9 +9,11 @@ import Logo from "../../images/logo.png";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../configs/firebase";
 import { useSelector } from "react-redux";
-import { useLogOut } from "../../functions/useLogOut";
+import { logOutUser } from "../../functions/useLogOut";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
+  const navigate = useNavigate();
   const { totalAmount: cartAmount } = useSelector((state) => state.cart);
   const { items: wishList } = useSelector((state) => state.wishList);
 
@@ -110,7 +112,10 @@ export const Navbar = () => {
                     </span>
                   }
                 />
-                <IoLogOutOutline size={26} onClick={useLogOut} />
+                <IoLogOutOutline
+                  size={26}
+                  onClick={() => logOutUser({ navigate })}
+                />
               </>
             ) : (
               <>
