@@ -15,5 +15,5 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
 export const isAuthenticated = () => {
-  return !!sessionStorage.getItem("accessToken");
+  return !!localStorage.getItem("accessToken");
 };

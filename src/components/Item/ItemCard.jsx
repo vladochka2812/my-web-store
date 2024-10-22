@@ -1,19 +1,46 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { IoHeartOutline, IoStarOutline, IoCloseOutline } from "react-icons/io5";
 import { Button } from "../shared/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../redux/cart/cartSlice";
+import { isAuthenticated } from "../../configs/firebase";
+import { selectItems } from "../../redux/select";
+import { addToCart } from "../../redux/cart/cartActions";
+import {
+  addToWishList,
+  removeFromWishList,
+} from "../../redux/wishList/wishListActions";
 
 export const ItemCard = ({ item }) => {
   const { title, description, image, id, price, rating } = item;
-  const itemInCart = useSelector((state) => state.cart.items).find(
-    (item) => item.id === id
-  );
+  const { cart, wishList } = useSelector(selectItems);
+  const itemInCart = useMemo(() => {
+    return cart.find((item) => item.id === id);
+  }, [cart, id]);
+  const itemInWishList =
+    (() => {
+      wishList.find((item) => item.id === id);
+    },
+    [wishList, id]);
+
   const dispatch = useDispatch();
   const [showMore, setShowMore] = useState(false);
+
+  const handleHeartClick = () => {
+    dispatch(
+      itemInWishList ? removeFromWishList({ id }) : addToWishList({ id })
+    );
+  };
+
   return (
     <div className="w-[400px] m-12 flex flex-col items-center shadow-xl p-2 rounded-lg relative justify-between">
-      <IoHeartOutline size={32} className="absolute top-4 left-2" />
+      {isAuthenticated() && (
+        <IoHeartOutline
+          size={32}
+          color={itemInWishList ? "red" : "black"}
+          className="absolute top-4 left-2"
+          onClick={handleHeartClick}
+        />
+      )}
       <div
         className={`${
           showMore ? "absolute" : "hidden"

@@ -1,33 +1,29 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { NavbarLink } from "../Navbar/NavbarLink";
 import { Button } from "../shared/Button/Button";
 import { Input } from "../shared/Input/Input";
+import { RoutesList } from "../../utilities/routes";
+import {
+  signInFormComponents,
+  signUpFormComponents,
+} from "../../utilities/formComponents";
+import { useAuth } from "../../functions/useAuth";
 
-export const AuthForm = ({ handleAuth }) => {
+export const AuthForm = () => {
   const { pathname } = useLocation();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  let formText = {};
-  if (pathname === "/signIn") {
-    formText = {
-      title: "Sign in to your account",
-      description: "Don't have an account?",
-      link: "/signIn",
-      button: "Sign In",
-    };
-  } else {
-    formText = {
-      title: "Create account",
-      description: "Already have an account",
-      link: "/signUp",
-      button: "Sign Up",
-    };
-  }
+  const navigate = useNavigate();
 
+  const cacheFormText = useMemo(() => {
+    return pathname === RoutesList.SIGNIN
+      ? signInFormComponents
+      : signUpFormComponents;
+  }, [pathname]);
   return (
     <div className="w-[400px] h-[400px] shadow-xl rounded-xl p-3 flex flex-col justify-around items-center">
-      <h2 className="text-[32px] font-semibold">{formText.title}</h2>
+      <h2 className="text-[32px] font-semibold">{cacheFormText.title}</h2>
       <div>
         <Input
           placeholder="Email"
@@ -46,15 +42,14 @@ export const AuthForm = ({ handleAuth }) => {
           }}
         />
       </div>
-
       <Button
         onClick={() => {
-          handleAuth(email, password);
+          useAuth.function(pathname, email, password, navigate);
         }}
       >
-        {formText.button}
+        {cacheFormText.button}
       </Button>
-      <NavbarLink link={formText.link} name={formText.description} />
+      <NavbarLink link={cacheFormText.link} name={cacheFormText.description} />
     </div>
   );
 };
